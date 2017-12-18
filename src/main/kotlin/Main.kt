@@ -1,5 +1,6 @@
 import spark.Spark.*
 import spark.Spark.staticFiles
+import java.util.*
 
 val localhost = true
 
@@ -12,5 +13,11 @@ fun main(args: Array<String>) {
         staticFiles.location("/web")
     }
 
+    val userHandler = UserHandler()
+
     get("/hello") { req, res -> "Hello World" }
+
+    get("/user/:id") { req, res ->
+        userHandler.getUser(UUID.fromString(req.params("id")))
+    }
 }
