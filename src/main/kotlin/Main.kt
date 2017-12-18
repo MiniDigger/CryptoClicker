@@ -1,6 +1,5 @@
-import spark.Spark.*
+import spark.Spark.get
 import spark.Spark.staticFiles
-import java.util.*
 
 val localhost = true
 
@@ -17,7 +16,22 @@ fun main(args: Array<String>) {
 
     get("/hello") { req, res -> "Hello World" }
 
-    get("/user/:id") { req, res ->
-        userHandler.getUser(UUID.fromString(req.params("id")))
+    get("/user/:name") { req, res ->
+        userHandler.getUserByName(req.params("name"))
+    }
+
+    get("/login/:email/:pw") { req, res ->
+        val email = req.params("email")
+        val pw = req.params("pw")
+        userHandler.login(email, pw)
+    }
+
+    get("/register/:email/:pw/:name/:coin") { req, res ->
+        userHandler.createUser(
+                req.params("name"),
+                req.params("email"),
+                req.params("pw"),
+                req.params("coin")
+        )
     }
 }
