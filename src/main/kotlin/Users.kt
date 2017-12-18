@@ -5,6 +5,7 @@ private val users: MutableMap<String, User> = mutableMapOf()
 fun initUserHandler() {
     createUser("test", "test@test.de", "123456", BITCOIN.name)
     getUserByName("test")?.state?.generators?.put(GPU, 1)
+    getUserByName("test")?.state?.generators?.put(MAINFRAME, 1)
 }
 
 fun getUserByName(name: String): User? = users[name]
@@ -15,7 +16,7 @@ fun createUser(name: String, email: String, pw: String, coinName: String): Strin
     if (getUserByName(name) != null) return "name taken"
     if (getUserByEmail(email) != null) return "email taken"
     val coin = getCoin(coinName) ?: return "unknown coin"
-    val state = UserState(0, System.currentTimeMillis(), mutableMapOf())
+    val state = UserState(0.0, System.currentTimeMillis(), mutableMapOf())
     val user = User(name, BCrypt.hashpw(pw, BCrypt.gensalt()), email, state, coin)
     users.put(name, user)
     println("Registered new User: $user")

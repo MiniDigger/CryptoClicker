@@ -1,4 +1,3 @@
-import com.google.gson.GsonBuilder
 import spark.Route
 import spark.Spark.get
 import spark.Spark.staticFiles
@@ -6,8 +5,6 @@ import spark.Spark.staticFiles
 val localhost = true
 
 fun main(args: Array<String>) {
-    val gson = GsonBuilder().setPrettyPrinting().create()
-
     if (localhost) {
         val projectDir = System.getProperty("user.dir")
         val staticDir = "/src/main/resources/web"

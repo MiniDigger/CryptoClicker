@@ -5,7 +5,7 @@ data class User(val name: String, var password: String, var email: String, var s
 
 data class Coin(val name: String, val icon: File)
 
-data class UserState(var balance: Long, var lastSimulation: Long, /* val upgrades: MutableList<Upgrade>,*/ val generators: MutableMap<Generator, Int>)
+data class UserState(var balance: Double, var lastSimulation: Long, /* val upgrades: MutableList<Upgrade>,*/ val generators: MutableMap<Generator, Int>)
 
 //data class Upgrade(val id: UUID, val displayName: String, val icon: File)
 

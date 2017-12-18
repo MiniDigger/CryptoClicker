@@ -28,6 +28,6 @@ fun simulate(user: User) {
     user.state.lastSimulation = System.currentTimeMillis()
 
     for ((generator, count) in user.state.generators) {
-        user.state.balance += (generator.rate * count).toLong()
+        user.state.balance += generator.rate * count
     }
 }
