@@ -1,9 +1,13 @@
+import com.google.gson.GsonBuilder
+import spark.Route
 import spark.Spark.get
 import spark.Spark.staticFiles
 
 val localhost = true
 
 fun main(args: Array<String>) {
+    val gson = GsonBuilder().setPrettyPrinting().create()
+
     if (localhost) {
         val projectDir = System.getProperty("user.dir")
         val staticDir = "/src/main/resources/web"
@@ -12,26 +16,28 @@ fun main(args: Array<String>) {
         staticFiles.location("/web")
     }
 
-    val userHandler = UserHandler()
+    initUserHandler()
 
-    get("/hello") { req, res -> "Hello World" }
+    get("/user/:name", Route({ req, res ->
+        getUserByName(req.params("name"))
+    }), JsonTransformer())
 
-    get("/user/:name") { req, res ->
-        userHandler.getUserByName(req.params("name"))
-    }
+    get("/state/:name/:recalc", Route({ req, res ->
+        simulation(req.params("name"), req.params("recalc"))
+    }), JsonTransformer())
 
-    get("/login/:email/:pw") { req, res ->
+    get("/login/:email/:pw", Route({ req, res ->
         val email = req.params("email")
         val pw = req.params("pw")
-        userHandler.login(email, pw)
-    }
+        login(email, pw)
+    }), JsonTransformer())
 
-    get("/register/:email/:pw/:name/:coin") { req, res ->
-        userHandler.createUser(
+    get("/register/:email/:pw/:name/:coin", Route({ req, res ->
+        createUser(
                 req.params("name"),
                 req.params("email"),
                 req.params("pw"),
                 req.params("coin")
         )
-    }
+    }), JsonTransformer())
 }
