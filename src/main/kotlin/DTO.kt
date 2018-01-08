@@ -1,12 +1,11 @@
 import java.io.File
-import java.util.*
 
-data class User(val name: String, var password: String, var email: String, var state: UserState, val coin: Coin)
+data class User(val id: Int, val name: String, var password: String, var email: String, var state: UserState, val coin: Coin)
 
-data class Coin(val name: String, val icon: File)
+data class Coin(val id: Int, val name: String, val icon: File)
 
-data class UserState(var balance: Double, var lastSimulation: Long, /* val upgrades: MutableList<Upgrade>,*/ val generators: MutableMap<Generator, Int>)
+data class UserState(val id: Int, var balance: Double, var lastSimulation: Long, val upgrades: MutableList<Upgrade>, val generators: MutableMap<Generator, Int>)
 
-//data class Upgrade(val id: UUID, val displayName: String, val icon: File)
+data class Upgrade(val id: Int, val name: String, val icon: File)
 
-data class Generator(val name: String, val icon: File, val rate: Double)
+data class Generator(val id: Int, val name: String, val icon: File, val rate: Double)

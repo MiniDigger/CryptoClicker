@@ -17,6 +17,7 @@ apply plugin: 'kotlin'
 repositories {
     mavenCentral()
     maven { url "https://jitpack.io" }
+    maven { url  "https://dl.bintray.com/kotlin/exposed" }
 }
 
 dependencies {
@@ -25,6 +26,9 @@ dependencies {
     compile "org.slf4j:slf4j-simple:1.7.21"
     compile 'com.github.jeremyh:jBCrypt:master-SNAPSHOT'
     compile 'com.github.salomonbrys.kotson:kotson:2.5.0'
+    compile 'org.jetbrains.exposed:exposed:0.9.1'
+    compile 'mysql:mysql-connector-java:5.1.6'
+
 }
 
 compileKotlin {
