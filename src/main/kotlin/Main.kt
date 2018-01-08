@@ -13,24 +13,26 @@ fun main(args: Array<String>) {
         staticFiles.location("/web")
     }
 
-    initUserHandler()
+    val db = DB()
+    val userHandler = UserHandler(db)
+    val sim = Simulation(userHandler)
 
     get("/user/:name", Route({ req, res ->
-        getUserByName(req.params("name"))
+        userHandler.getUserByName(req.params("name"))
     }), JsonTransformer())
 
     get("/state/:name/:recalc", Route({ req, res ->
-        simulation(req.params("name"), req.params("recalc"))
+        sim.status(req.params("name"), req.params("recalc"))
     }), JsonTransformer())
 
     get("/login/:email/:pw", Route({ req, res ->
         val email = req.params("email")
         val pw = req.params("pw")
-        login(email, pw)
+        userHandler.login(email, pw)
     }), JsonTransformer())
 
     get("/register/:email/:pw/:name/:coin", Route({ req, res ->
-        createUser(
+        userHandler.createUser(
                 req.params("name"),
                 req.params("email"),
                 req.params("pw"),
