@@ -1,8 +1,10 @@
+package de.fhaachen.cryptoclicker
+
 import java.sql.Connection
 import java.sql.DriverManager
 import java.sql.ResultSet
 
-class DB {
+object DB {
 
     private var connection: Connection
 

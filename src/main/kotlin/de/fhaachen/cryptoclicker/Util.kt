@@ -1,3 +1,5 @@
+package de.fhaachen.cryptoclicker
+
 import com.google.gson.GsonBuilder
 import spark.ResponseTransformer
 

@@ -1,3 +1,5 @@
+package de.fhaachen.cryptoclicker
+
 import java.io.File
 
 data class User(val id: Int, val name: String, var password: String, var email: String, var state: UserState, val coin: Coin)

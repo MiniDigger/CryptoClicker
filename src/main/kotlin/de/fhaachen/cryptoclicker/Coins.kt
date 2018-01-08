@@ -1,3 +1,5 @@
+package de.fhaachen.cryptoclicker
+
 import java.io.File
 
 val BITCOIN = Coin(0, "Bitcoin", File("bitcoin.png"))

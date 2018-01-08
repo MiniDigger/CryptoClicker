@@ -1,3 +1,5 @@
+package de.fhaachen.cryptoclicker
+
 import spark.Route
 import spark.Spark.get
 import spark.Spark.staticFiles
@@ -7,7 +9,7 @@ val localhost = true
 fun main(args: Array<String>) {
     if (localhost) {
         val projectDir = System.getProperty("user.dir")
-        val staticDir = "/src/main/resources/web"
+        val staticDir = "/src/de.fhaachen.cryptoclicker.main/resources/web"
         staticFiles.externalLocation(projectDir + staticDir)
     } else {
         staticFiles.location("/web")

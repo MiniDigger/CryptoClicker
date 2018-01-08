@@ -1,9 +1,11 @@
+package de.fhaachen.cryptoclicker
+
 class Simulation(private val userHandler: UserHandler) {
 
     private val interval = 1000L
 
     fun status(userName: String?, recalc: String?): UserState {
-        if (userName == null) throw IllegalArgumentException("User null")
+        if (userName == null) throw IllegalArgumentException("de.fhaachen.cryptoclicker.User null")
 
         val user = userHandler.getUserByName(userName) ?: throw IllegalArgumentException("Unknown user")
         val calc = recalc?.toBoolean() ?: false
