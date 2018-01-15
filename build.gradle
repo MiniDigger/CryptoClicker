@@ -12,6 +12,10 @@ buildscript {
     }
 }
 
+plugins {
+    id 'com.github.johnrengelman.shadow' version '2.0.1'
+}
+build.dependsOn shadowJar
 apply plugin: 'kotlin'
 
 repositories {
@@ -28,6 +32,17 @@ dependencies {
     compile 'com.github.salomonbrys.kotson:kotson:2.5.0'
     compile 'mysql:mysql-connector-java:5.1.6'
 
+}
+
+jar {
+    manifest {
+        attributes 'Main-Class': 'de.fhaachen.cryptoclicker.MainKt'
+    }
+}
+
+shadowJar {
+    mergeServiceFiles()
+    configurations = [project.configurations.compile]
 }
 
 compileKotlin {
