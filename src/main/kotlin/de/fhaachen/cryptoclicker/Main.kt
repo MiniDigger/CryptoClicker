@@ -1,8 +1,7 @@
 package de.fhaachen.cryptoclicker
 
 import spark.Route
-import spark.Spark.get
-import spark.Spark.staticFiles
+import spark.Spark.*
 
 val localhost = true
 
@@ -15,30 +14,30 @@ fun main(args: Array<String>) {
         staticFiles.location("/web")
     }
 
-    val db = DB()
+    val db = DB
     val userHandler = UserHandler(db)
     val sim = Simulation(userHandler)
 
     get("/user/:name", Route({ req, res ->
-        userHandler.getUserByName(req.params("name"))
+        userHandler.getOrLoadUser(name2 = req.params("name"))
     }), JsonTransformer())
 
     get("/state/:name/:recalc", Route({ req, res ->
         sim.status(req.params("name"), req.params("recalc"))
     }), JsonTransformer())
 
-    get("/login/:email/:pw", Route({ req, res ->
-        val email = req.params("email")
-        val pw = req.params("pw")
+    post("/login/", Route({ req, res ->
+        val email = req.queryParams("email")
+        val pw = req.queryParams("pw")
         userHandler.login(email, pw)
     }), JsonTransformer())
 
-    get("/register/:email/:pw/:name/:coin", Route({ req, res ->
+    post("/register/", Route({ req, res ->
         userHandler.createUser(
-                req.params("name"),
-                req.params("email"),
-                req.params("pw"),
-                req.params("coin")
+                req.queryParams("name"),
+                req.queryParams("email"),
+                req.queryParams("pw"),
+                req.queryParams("coin")
         )
     }), JsonTransformer())
 }

@@ -3,10 +3,12 @@ package de.fhaachen.cryptoclicker
 import java.sql.Connection
 import java.sql.DriverManager
 import java.sql.ResultSet
+import java.sql.Statement
 
 object DB {
 
     private var connection: Connection
+    private var statement: Statement? = null
 
     init {
         Class.forName("com.mysql.jdbc.Driver").newInstance()
@@ -14,7 +16,18 @@ object DB {
         if (!dbExists()) createDB()
     }
 
-    fun String.exec(): Boolean = connection.createStatement().execute(this)
+    fun getGeneratedId(): Int {
+        val genkeys = statement?.generatedKeys
+        while (genkeys?.next() == true)
+            return genkeys.getInt(1)
+        return -1
+    }
+
+    fun String.exec(): Boolean {
+        statement = connection.createStatement();
+        return statement?.execute(this, Statement.RETURN_GENERATED_KEYS) ?: false
+    }
+
     fun String.execQuery(): ResultSet = connection.createStatement().executeQuery(this)
     fun String.execUpdate(): Int = connection.createStatement().executeUpdate(this)
 
@@ -75,6 +88,7 @@ object DB {
         (
             generator_id INT,
             state_id INT,
+            level INT,
             CONSTRAINT Generators_generator_id_state_id_pk PRIMARY KEY (generator_id, state_id),
             CONSTRAINT Generators_Generator_id_fk FOREIGN KEY (generator_id) REFERENCES cryptoclicker.Generator (id),
             CONSTRAINT Generators_UserState_id_fk FOREIGN KEY (state_id) REFERENCES cryptoclicker.UserState (id)

@@ -7,7 +7,7 @@ class Simulation(private val userHandler: UserHandler) {
     fun status(userName: String?, recalc: String?): UserState {
         if (userName == null) throw IllegalArgumentException("de.fhaachen.cryptoclicker.User null")
 
-        val user = userHandler.getUserByName(userName) ?: throw IllegalArgumentException("Unknown user")
+        val user = userHandler.getOrLoadUser(name2 = userName) ?: throw IllegalArgumentException("Unknown user")
         val calc = recalc?.toBoolean() ?: false
         if (calc) {
             catchUp(user)
