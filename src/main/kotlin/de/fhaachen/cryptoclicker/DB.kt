@@ -24,7 +24,8 @@ object DB {
     }
 
     fun String.exec(): Boolean {
-        statement = connection.createStatement();
+        statement = connection.createStatement()
+        println("sql " + this)
         return statement?.execute(this, Statement.RETURN_GENERATED_KEYS) ?: false
     }
 

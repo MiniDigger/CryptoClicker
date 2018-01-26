@@ -43,7 +43,7 @@ class UserHandler(private val db: DB) {
                     rs.getString("password"),
                     rs.getString("email"),
                     getOrLoadState(rs.getInt("state_id")),
-                    getOrLoadCoin(rs.getInt("coin")))
+                    getOrLoadCoin(rs.getInt("coin_id")))
             users.add(user)
             return user
         } catch (ex: Exception) {
@@ -72,8 +72,7 @@ class UserHandler(private val db: DB) {
 
     fun saveState(userState: UserState) {
         //language=MySQL
-        "INSERT INTO cryptoclicker.UserState(balance, lastSimulation) VALUES ('${userState.balance}','${userState.lastSimulation}') ON DUPLICATE KEY UPDATE balance=VALUES(balance),lastSimulation=VALUES(lastSimulation)".exec()
-        userState.id = DB.getGeneratedId()
+        ("INSERT INTO cryptoclicker.UserState(id, balance, lastSimulation) VALUES ('${userState.id}','${userState.balance}','${userState.lastSimulation}') ON DUPLICATE KEY UPDATE balance=VALUES(balance),lastSimulation=VALUES(lastSimulation)").exec()
         userState.generators.forEach { gen, lvl ->
             saveGenerator(gen)
             //language=MySQL
@@ -102,7 +101,7 @@ class UserHandler(private val db: DB) {
         //language=MySQL
         ("INSERT INTO cryptoclicker.Coin(name, icon) VALUES ('${coin.name}','${coin.icon}') ON DUPLICATE KEY UPDATE name=VALUES(name),icon=VALUES(icon)").exec()
         val generatedId = DB.getGeneratedId()
-        if(generatedId != -1){
+        if (generatedId != -1) {
             //TODO fixme
             coin.id = generatedId
         }
@@ -123,5 +122,13 @@ class UserHandler(private val db: DB) {
     fun login(email: String, password: String): Boolean {
         val user = getOrLoadUser(email2 = email) ?: return false
         return BCrypt.checkpw(password, user.password)
+    }
+
+    fun addGenerator(username: String, generatorname: String): UserState? {
+        val user = getOrLoadUser(name2 = username) ?: return null
+        val generator = getGenerator(generatorname) ?: return null
+        user.state.generators.compute(generator, { key: Generator, old: Int? -> (old ?: 0) + 1 })
+        saveUser(user)
+        return user.state
     }
 }

@@ -11,6 +11,7 @@ class Simulation(private val userHandler: UserHandler) {
         val calc = recalc?.toBoolean() ?: false
         if (calc) {
             catchUp(user)
+            userHandler.saveUser(user)
         }
         return user.state
     }
@@ -18,7 +19,7 @@ class Simulation(private val userHandler: UserHandler) {
     fun catchUp(user: User) {
         val diff = System.currentTimeMillis() - user.state.lastSimulation
         val catchUp = (diff / interval).toInt()
-        println("diff is $diff, catchup is $catchUp")
+        //println("diff is $diff, catchup is $catchUp")
         simulate(user, catchUp)
     }
 

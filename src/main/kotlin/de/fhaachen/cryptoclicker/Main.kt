@@ -26,6 +26,10 @@ fun main(args: Array<String>) {
         sim.status(req.params("name"), req.params("recalc"))
     }), JsonTransformer())
 
+    get("/generator/:username/:generatorname", Route({ req, res ->
+        userHandler.addGenerator(req.params("username"), req.params("generatorname"))
+    }), JsonTransformer())
+
     post("/login/", Route({ req, res ->
         val email = req.queryParams("email")
         val pw = req.queryParams("pw")
